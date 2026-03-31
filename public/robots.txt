@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://scores.totalsportslive.co.zw/sitemap.xml

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SEO Audit</title>
+</head>
+<body>
+
+<h2>SEO Audit Tool</h2>
+<input id="url" placeholder="Enter URL">
+<button onclick="run()">Audit</button>
+
+<pre id="out"></pre>
+
+<script>
+async function run(){
+  const url = document.getElementById("url").value;
+  const res = await fetch(url);
+  const html = await res.text();
+
+  const report = [];
+
+  if(!html.includes("<title>")) report.push("❌ Missing title tag");
+  if(!html.includes("description")) report.push("❌ Missing meta description");
+  if(!html.includes("application/ld+json")) report.push("❌ Missing schema");
+  if(!html.includes("og:title")) report.push("❌ Missing OpenGraph");
+
+  document.getElementById("out").textContent =
+    report.length ? report.join("\n") : "✅ Page looks SEO optimized";
+}
+</script>
+
+</body>
+</html>

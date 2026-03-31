@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2485970459707316" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+
+  <link rel="canonical" id="canonicalLink">
+
+  <meta name="description" id="metaDesc">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="sports_event">
+  <meta property="og:title" id="ogTitle">
+  <meta property="og:description" id="ogDesc">
+  <meta property="og:image" id="ogImage">
+  <meta property="og:url" id="ogUrl">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twTitle">
+  <meta name="twitter:description" id="twDesc">
+  <meta name="twitter:image" id="twImage">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Totalsports</title>
+  <link rel="shortcut icon" href="assets/goal.jpg"> <!-- FIXED CDN LINKS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="monetag" content="5499b0318d24c03afc7e18b0f43d0d69">
+  <style>
+    :root {
+      --dark-bg:#fff                                         --text-primary:#030808;
+    }
+           /* BODY */
+    body{
+    margin: 9px;
+      background:var(--dark-bg);
+      color:var(--text-primary);
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;   padding-bottom:70px;                                     }
+           /* HEADER */                                               .app-header{                                                 background:#fff;                                           position:sticky;                                           top:0;                                                     z-index:100;                                               box-shadow:0 2px 10px rgba(0,0,0,0.1);
+      padding:5px 10px;                                        }
+           .header-content{
+      display:flex;                                              align-items:center;
+      width:100%;                                              }
+           .menu-btn,
+    .half-moon-btn{                                              background:none;
+      border:none;                                               cursor:pointer;                                            display:flex;                                              align-items:center;                                      }                                                                                                                     .app-title{                                                  flex:1;                                                    text-align:center;
+    }                                                          
+    /* SIDE MENU */
+    .side-menu{                                                  position:fixed;
+      top:0;                                                     left:0;                                                    transform:translateX(-100%);                               width:250px;                                               height:100%;                                               background:#1C2436;                                        padding:20px;                                              z-index:200;
+      transition:0.3s;                                         }                                                                                                                     .side-menu.open{                                             transform:translateX(0);                                 }                                                          .side-menu a{
+      display:block;                                             padding:12px 10px;
+      color:white;
+      text-decoration:none;
+      margin-bottom:10px;                                        border-radius:4px;
+    }                                                                                                                     .side-menu a:hover{                                          background:#b9fa3c;                                        color:#10002e;                                           }
+           .side-menu .close-btn{                                       background:none;                                           border:none;                                               color:white;                                               float:right;                                               cursor:pointer;                                            margin-bottom:20px;                                      }
+           /* OVERLAY */                                              #overlay{                                                    position:fixed;
+      display:none;                                              top:0;left:0;
+      width:100%;height:100%;                                    background:rgba(0,0,0,0.5);                                z-index:150;
+    }
+    
+    #searchInput{
+      width:100%;                                                padding:10px;
+      border-radius:8px;
+      border:1px solid #ccc;                                   }                                                                                                                     .search-dropdown{
+      position:absolute;                                         background:#fff;                                           width:100%;                                                max-height:300px;
+      overflow-y:auto;                                           box-shadow:0 4px 10px rgba(0,0,0,.15);
+      display:none;                                              z-index:99999;                                           }
+           .search-item{
+      padding:10px;                                              border-bottom:1px solid #eee;                              cursor:pointer;                                          }                                                                                                                     .search-item:hover{                                          background:#f2f2f2;                                      }                                                          
+    .search-btn,
+    .half-moon-btn{
+      background:none;                                           border:none;                                               cursor:pointer;                                            display:flex;                                              align-items:center;
+      justify-content:center;                                  }                                                                                                                     .search-btn svg,                                           .half-moon-btn svg{                                          color:#10002e;
+    }                                                          #searchInput{                                                width:100%;                                                padding:12px;                                              border:none;                                               border-bottom:1px solid #ddd;                              font-size:1rem;                                          }                                                          #searchInput,
+    #searchResults{                                              display:none;                                            }
+    
+    #top-match-strip {
+      width: 100%;
+      min-height: 50px;
+      margin-bottom: 15px;                                     }
+           #match-pills {                                               min-height: 40px;                                        }
+        #top-match-strip {                                       position: sticky;                                          top: 0;                                                    z-index: 50;                                               border-bottom: 1px solid #eee;                           }                                                          
+    .espn-scroll {
+      display: flex;                                             gap: 12px;
+      padding: 10px;                                             overflow-x: auto; /* horizontal scroll */                  scrollbar-width: none;                                   }                                                                                                                     .espn-scroll::-webkit-scrollbar {                            display: none;                                           }
+           .espn-pill {                                                   display: flex;                                             align-items: center;                                       justify-content: space-between; /* team logos stick to edges */
+        min-width: 120px;       /* minimum width for small pills */                                                           max-width: 180px;       /* optional: max width */          padding: 5px 10px;
+        background: #f0f0f0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: sans-serif;                                   flex-shrink: 0;         /* important: prevent shrinking in flex container */
+    }                                                          
+    .pill-team {
+      display: flex;
+      align-items: center;                                       gap: 8px;                                                }                                                          
+    .pill-team img {                                             width: 26px;
+      height: 26px;
+    }                                                          
+    .pill-team span {                                            font-size: 13px;                                           font-weight: 600;                                        }                                                          
+    .vs-text {
+      display: flex;
+        align-items: center;                                       justify-content: center;
+        min-width: 40px; /* fixed width for VS/status */
+        font-weight: bold;
+        color: black;
+    }
+    
+    .pill-score-text {
+      font-weight: bold;
+      color: red;
+      font-size: 18px;
+     }
+           .pill-away-score {
+      font-weight: bold;                                         color: red;                                                font-size: 11px;                                                                                                    }
+    
+    /* FOOTER */                                               .site-footer{
+      background:#ebebeb;
+      color:#131413;
+      padding:20px 15px;                                         margin-top:30px;                                           font-size:0.9rem;                                        }
+    .footer-content{                                             max-width:800px;                                           margin:auto;                                             }                                                          .footer-links.vertical{                                      display:flex;                                              flex-direction:column;                                     gap:12px;                                                }                                                                                                                     .footer-copy{                                                text-align:center;
+      opacity:0.6;                                             }                                                          
+    .footer-legal{                                               text-align:center;
+    }                                                          .footer-legal a,
+    .footer-legal span{                                          opacity:0.6;
+      margin:0 6px;                                              text-decoration:none;
+      color:#131413;
+    }                                                                                                                     .footer-legal a:hover{
+      opacity:1;                                                 text-decoration:underline;                               }                                                                                                                     /* BOTTOM NAV */                                           .bottom-nav{                                                 position:fixed;                                            bottom:0;                                                  left:0;                                                    right:0;                                                   background: #e3e3e3;                                       display:flex;                                              justify-content:space-around;                              padding:17px 0;                                            z-index:100;                                             }                                                          
+    .nav-item{                                                   display:flex;                                              flex-direction:column;                                     align-items:center;                                        color: #141413;                                            text-decoration:none;                                      font-size:1.0rem;                                        }                                                                                                                     /* DARK MODE */
+    body.dark-mode{                                              background:#121212;                                        color:#eee;
+    }                                                                                                                     body.dark-mode .app-header{                                  background:#1f1f1f;                                      }
+           body.dark-mode a{                                            color:#fff;                                              }                                                          
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDE MENU -->
+  <!-- SIDE MENU -->
+  <div id="side-menu" class="side-menu"> <button class="close-btn" onclick="closeMenu()">✕</button> <a href="/">Home</a> <a href="/privacy.html">Privacy Policy</a> <a href="/about.html">About Us</a> <a href="/contact.html">Contact Us</a> </div>
+  <div id="overlay" onclick="closeMenu()"></div> <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-content"> <button onclick="openMenu()" class="menu-btn"> <svg width="24" height="24" viewBox="0 0 24 24">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="#10002e" stroke-width="2" stroke-linecap="round" />
+        </svg> </button>
+      <div class="app-title"> <img src="/assets/goal.jpg" width="150"> </div> <!-- SEARCH BUTTON -->
+      <button onclick="toggleSearch()" class="search-btn">
+        <!-- Search Icon --> <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+      <!-- DARK MODE BUTTON -->
+      <button onclick="rdmode()" class="half-moon-btn"> <svg viewBox="0 0 24 24" width="24">
+          <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" fill="orange" />
+        </svg> </button>
+    </div>
+  </header>
+  <input type="text" id="searchInput" placeholder="Search news..." autocomplete="off" />
+  <div id="searchResults" class="search-dropdown"></div>
+  <div id='top-match-strip'>
+    <div class='espn-scroll' id='match-pills' />
+  </div>
+  <script src="https://love.totalsportslive.co.zw/matches.js"></script>
+  <link href='https://vicecap.github.io/Kingg/styleee.css' rel='stylesheet' type='text/css' />
+  <div id="match-widget"></div><!-- TOP MATCH AD -->
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2485970459707316" data-ad-slot="2737166010" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+  <script>
+    (adsbygoogle=window.adsbygoogle||[]).push({});
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/widget.js"></script>
+  <!-- Toggle Search Box -->
+  <script>
+    function toggleSearch() {
+      const input = document.getElementById("searchInput");
+      const results = document.getElementById("searchResults");
+    
+      if (input.style.display === "block") {
+        input.style.display = "none";
+        results.style.display = "none";
+      } else {
+        input.style.display = "block";
+        input.focus();
+      }
+    }
+  </script>
+
+  <!-- Live Search Logic -->
+  <script>
+    const input = document.getElementById("searchInput");
+    const resultsBox = document.getElementById("searchResults");
+    
+    input.addEventListener("input", async () => {
+      const q = input.value.trim();
+    
+      if (q.length < 2) {
+        resultsBox.style.display = "none";
+        return;
+      }
+    
+      const res = await fetch(`/api/search?q=${q}`);
+      const results = await res.json();
+    
+      resultsBox.innerHTML = "";
+    
+      results.slice(0, 5).forEach(post => {
+        const div = document.createElement("div");
+        div.className = "search-item";
+        div.innerHTML = post.title;
+    
+        div.onclick = () => {
+          window.location.href = "/post/" + post.slug;
+        };
+    
+        resultsBox.appendChild(div);
+      });
+    
+      resultsBox.style.display = "block";
+    });
+    
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        window.location.href = "/search.html?q=" + input.value;
+      }
+    });
+  </script>
+
+
+
+  <div><br /></div>
+  <div></div>
+  <div><br /></div>
+  <div><span style="font-size: medium; text-align: left;"><span style="color: #ffa400;"><span style="font-size: medium;"><b style="font-family: arial; font-size: 13px;">👉&nbsp;</b></span></span></span><b style="font-family: arial; font-size: 13px; text-align: left;">The match links are activated 5 minutes before kickoff.&nbsp;</b></div><span>
+    <div><span><span style="font-size: 13px;"><i style="font-family: arial;">👉</i><span style="font-family: arial;"><b>&nbsp;Go to below links to get matches. If the first link doesn’t work, go for the second or third link.</b></span></span></span></div>
+  </span>
+  <div style="text-align: left;">
+    <div style="text-align: center;">
+      <div><br />
+      </div>
+      <div><!--MATCH CODE STARTS HERE-->
+
+        <div align="center">
+
+          <form><input class="MyButton" onclick="window.location.href=''" type="button" value="Refresh Page" /></form>
+
+
+          <br />
+
+
+
+          <div><span style="font-family: inherit;"><span style="background: none 0px 0px repeat scroll rgb(255, 255, 255); border: 0px none; font-family: inherit; font-size: 14px; margin: 0px; outline: currentcolor none 0px; padding: 0px; vertical-align: baseline;">
+                <div class="liner bdr" style="background: none 0px 0px repeat scroll rgb(9, 179, 32); border: medium none rgb(12, 38, 84); font-family: &quot;Open Sans&quot;; font-size: 15px; font-weight: bold; margin: 0px; outline: currentcolor none 0px; padding: 7px 0px; vertical-align: baseline; width: 100%;"><a href="https://whatsapp.com/channel/0029Vb5jrFaChq6DUcZ2Vn0O" target="_blank"><span style="color: white;">Get Updates - Click Here to Join WhatsApp</span></a></div>
+              </span></span></div>
+          <div><br />
+
+            <div id="matchButtons"></div>
+
+            <script>
+              (async function() {
+              
+                // Get matchId from URL path
+                const pathParts = window.location.pathname.split('/');
+                const matchId = pathParts[pathParts.length - 1];
+              
+                if (!matchId) return;
+              
+                try {
+                  const res = await fetch(`https://app.totalsportss.online/match-buttons/${matchId}`);
+                  if (!res.ok) throw new Error('Failed to fetch buttons');
+              
+                  const html = await res.text();
+                  document.getElementById('matchButtons').innerHTML = html;
+              
+                  // Open links in new tab
+                  document.querySelectorAll('#matchButtons a').forEach(a => {
+                    a.addEventListener('click', e => {
+                      e.preventDefault();
+                      window.open(a.href, '_blank');
+                    });
+                  });
+              
+                } catch (err) {
+                  console.error('Error loading buttons:', err);
+                }
+              })();
+            </script>
+
+            <br />
+            <script>
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const matchId = pathParts[pathParts.length - 1]; 
+const apiUrl = `https://api.totalsportss.online/matches/${matchId}`;
+
+let allComments = [];
+let displayed = 0;
+const batch = 12;
+
+async function fetchCommentary() {
+  try {
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+
+    const newComments = [
+      ...(data.liveCommentary || []),
+      ...(data.manualCommentary || [])
+    ];
+
+    newComments.sort((a, b) => b.time - a.time);
+
+    const existing = new Set(allComments.map(c => c.time + c.text));
+
+    newComments.forEach(c => {
+      if (!existing.has(c.time + c.text)) {
+        allComments.push(c);
+      }
+    });
+
+    allComments.sort((a, b) => b.time - a.time);
+
+    if (displayed === 0) showNextComments();
+
+  } catch (err) {
+    console.error('Error fetching commentary:', err);
+  }
+}
+
+function showNextComments() {
+  const commentsDiv = document.getElementById('comments');
+  const nextComments = allComments.slice(displayed, displayed + batch);
+
+  nextComments.forEach(c => {
+    const div = document.createElement('div');
+    div.classList.add('comment');
+    div.innerHTML = `
+      <span class="comment-time">⌚${c.time}'</span>
+      <span class="comment-text">📝${c.text}</span>
+    `;
+    commentsDiv.appendChild(div);
+  });
+
+  displayed += nextComments.length;
+
+  const btn = document.getElementById('show-more');
+  btn.style.display = displayed < allComments.length ? 'block' : 'none';
+}
+
+document.getElementById('show-more')
+  .addEventListener('click', showNextComments);
+
+fetchCommentary();
+setInterval(fetchCommentary, 10000);
+</script>
+            
+            <br />
+
+
+
+
+
+            <br />
+
+            <div class="container">
+
+              <div id="premier-league-stats-widget">
+
+                <!-- MID MATCH AD -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2485970459707316" data-ad-slot="3657034432" data-ad-format="fluid"></ins>
+
+                <script>
+                  (adsbygoogle=window.adsbygoogle||[]).push({});
+                </script>
+                <div id="pl-tabs"></div>
+                <div id="pl-stats-table"></div>
+              </div>
+            </div>
+<script>
+(async function () {
+
+  const tableContainer = document.getElementById("pl-stats-table");
+
+  // --- 1️⃣ Extract from URL PATH ---
+  const parts = window.location.pathname.split("/").filter(Boolean);
+
+  const sport = parts[0] || "football";
+  const dateOrCategory = parts[1] || "england";       // country
+  const competition = parts[2] || "premier-league";  // league
+
+  // --- 2️⃣ Build API URL dynamically ---
+  const API_URL = `https://cap.totalsportslive.co.zw/api/stats?competition=${competition}&dateOrCategory=${dateOrCategory}&sport=${sport}`;
+
+  let data;
+
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error("Failed to fetch");
+    data = await res.json();
+  } catch (e) {
+    tableContainer.innerHTML =
+      '<div class="error-message">Failed to load leaderboard. Please try again later.</div>';
+    return;
+  }
+
+  // --- Helper function to get correct team badge URL ---
+  function getTeamBadgeUrl(badge) {
+    if (!badge) return "https://via.placeholder.com/50";
+    if (badge.startsWith("enet/") || badge.startsWith("teambadge/")) {
+      return "https://storage.livescore.com/images/team/high/" + badge;
+    }
+    return badge;
+  }
+
+  // --- 3️⃣ Render tabs ---
+  data.tabs
+    .filter(tab => tab.id && tab.id !== "all")
+    .forEach((tab) => {
+
+      const tabName = tab.name
+        .replace("team.stat-", "")
+        .replace(/-/g, " ");
+
+      const stat = data.stats.find(s => s.statId === tab.id);
+      if (!stat) return;
+
+      const players = stat.players || [];
+
+      const tabDiv = document.createElement("div");
+      tabDiv.className = "lt-wrapperr";
+      tabDiv.innerHTML = `
+        <div class="lt-header">
+          <h2 class="lt-title">${tabName}</h2>
+        </div>
+        <div class="player-list">
+          ${players.map(p => `
+            <div class="player-row">
+              <div class="player-left">
+                <span class="player-rank">${p.rank}</span>
+                <img src="${getTeamBadgeUrl(p.teamBadge)}" class="team-logo" />
+                <div class="player-info">
+                  <span class="player-name">${p.name}</span>
+                  <span class="team-name">${p.teamName}</span>
+                </div>
+              </div>
+              <div class="player-stat">
+                <span class="stat-badge">${p.statAmount}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      tableContainer.appendChild(tabDiv);
+    });
+
+})();
+</script>
+
+            <br />
+
+            <br />
+            <div class="container p-0">
+              <div class="post-share text-center m-1">
+                <b:if cond="data:blog.languageDirection == &quot;ltr&quot;">
+                  <div style="text-align: center;"><span style="font-family: inherit;"><b>❌ Attention !!</b></span></div>
+                </b:if>
+              </div>
+            </div>
+
+            <br />
+          </div>
+        </div>
+        <div style="text-align: left;">
+          <b>Total Sports</b> Doesn't host any media content on it own Site-Our site visitors might use external or third parties services to show content, (Example: Embedding media from sites like Bet365, Dailymotion , Streamable etc ..) We Notify all copyright owners, to discover that the links and media shared by visitors and contained within this site are hosted somewhere else on the web or embedded from other various sites like above. If you have any legal issues please contact appropriate media file owners/hosters. All trademarks, videos, trade names, service marks, copyrighted work, logos here in belong to their respective owners / companies.&nbsp;<a href=""><b><u>totalsportslive.co.zw</u></b></a>&nbsp;is not responsible for what other people upload to 3rd party sites..
+        </div>
+      </div>
+
+      <br />
+    </div>
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p><strong>Total Sports Live delivers dependable football coverage without the noise. From breaking news to match analysis, it’s the site fans trust to get it right.</strong></p>
+        <div class="footer-links vertical"> <a href="/">Matches</a> <a href="/news.html">News</a> <a href="/transfer-center.html">Transfer Center</a> <a href="/about.html">About Us</a> <a href="/advertise.html">Advertise</a>
+        </div>
+        <p class="footer-copy"> © Copyright 2026 Total Sports Live </p>
+        <div class="footer-legal"> <a href="/terms.html">Terms of use</a> <span>•</span> <a href="/cookie-policy.html">Cookie policy</a> <span>•</span> <a href="/privacy.html">Privacy policy</a> </div>
+      </div>
+    </footer> <!-- BOTTOM NAV -->
+    <nav class="bottom-nav"> <a href="/" class="nav-item">🏡 Home</a> <a href="/stream1.html" class="nav-item">💻 Stream</a> <a href="/news.html" class="nav-item">📝 News</a> </nav>
+    <script>
+      function rdmode(){
+        document.body.classList.toggle('dark-mode');
+      }
+              function openMenu(){                                         document.getElementById('side-menu').classList.add('open');
+        document.getElementById('overlay').style.display='block';}
+      function closeMenu(){                                        document.getElementById('side-menu').classList.remove('open');                                                        document.getElementById('overlay').style.display='none'; }
+    </script>
+    <script>
+      (function(){
+      
+        const pathParts = location.pathname.split("/");
+      
+        const country = pathParts[1] || "football";
+        const league  = pathParts[2] || "league";
+        const match   = pathParts[3] || "match";
+      
+        const cleanMatch = match.replace(/-/g," ");
+      
+        const title =
+         `${cleanMatch} Live Stream & Score | ${league.replace(/-/g," ")} - TotalSportsLive`;
+      
+        const description =
+         `Watch ${cleanMatch} live streaming, live score, commentary, stats and match updates on TotalSportsLive.`;
+      
+        // Basic Meta
+        document.title = title;
+        document.getElementById("metaDesc").content = description;
+      
+        document.getElementById("canonicalLink").href =
+         location.href;
+      
+        // OpenGraph
+        ogTitle.content = title;
+        ogDesc.content  = description;
+        ogImage.content = "https://scores.totalsportslive.co.zw/assets/goal.jpg";
+        ogUrl.content   = location.href;
+      
+        // Twitter
+        twTitle.content = title;
+        twDesc.content  = description;
+        twImage.content = "https://scores.totalsportslive.co.zw/assets/goal.jpg";
+      
+        // ============================
+        // MATCH SCHEMA (SportsEvent)
+        // ============================
+        const schema = {
+          "@context":"https://schema.org",
+          "@type":"SportsEvent",
+          "name": cleanMatch,
+          "sport":"Football",
+          "url": location.href,
+          "location":{
+            "@type":"Place",
+            "name":"Stadium"
+          },
+          "organizer":{
+            "@type":"Organization",
+            "name":"TotalSportsLive"
+          }
+        };
+      
+        const s = document.createElement("script");
+        s.type="application/ld+json";
+        s.textContent=JSON.stringify(schema);
+        document.head.appendChild(s);
+      
+      })();
+      
+    </script>
+
+
+
+    <script async='async' crossorigin='anonymous' src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2485970459707316' />
+
+    <script type='text/javascript'>
+      $(document).ready(function () {
+          $(&#39;img#closed&#39;).click(function () {
+              $(&#39;#bl_banner&#39;).hide(90);
+          });
+      });
+    </script>
+    <div id='fixedban' style='width:100%;margin:auto;text-align:center;float:none;overflow:hidden;display:scroll;position:fixed;bottom:0;z-index:999;-webkit-transform:translateZ(0);'>
+      <div>
+        <a id='close-fixedban' onclick='document.getElementById(&quot;fixedban&quot;).style.display = &quot;none&quot;;' style='cursor:pointer;'>
+          <img alt='close' id='closed' src='https://yosintv2.github.io/bkp/close.gif' style='vertical-align:middle;' title='close button' />
+        </a>
+      </div>
+
+      <div style='text-align:center;display:block;max-width:300px;height:auto;overflow:hidden;margin:auto'>
+        <ins class='adsbygoogle' data-ad-client='ca-pub-2485970459707316' data-ad-format='auto' data-ad-slot='2737166010' style='display:inline-block;width:300px;height:250px' />
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+
+
+    <script>
+      (function(){
+      
+      const sessionId =
+        localStorage.getItem("sid") ||
+        (localStorage.setItem("sid",crypto.randomUUID()),
+         localStorage.getItem("sid"));
+      
+      fetch("/api/track",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+          url: location.pathname,
+          referrer: document.referrer,
+          sessionId
+        })
+      });
+      
+      fetch("/api/session",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ sessionId })
+      });
+      
+      // heartbeat
+      setInterval(()=>{
+        fetch("/api/heartbeat",{method:"POST"});
+      },5000);
+      
+      // heatmap
+      document.addEventListener("click",e=>{
+        fetch("/api/heatmap",{
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body:JSON.stringify({
+            x:e.clientX,
+            y:e.clientY,
+            url:location.pathname
+          })
+        });
+      });
+      
+      })();
+    </script>
+</body>
+
+</html>

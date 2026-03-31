@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+
+<!-- Search -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.js"></script>
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.css">
+
+<!-- Format -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-html.min.js"></script>
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial; padding:20px; background:#12121D; color:white; }
+
+.panel{
+  display:none;
+}
+    input, textarea, select { width:100%; margin-bottom:10px; padding:8px; border-radius:4px; border:none; }
+    textarea { height:600px; font-family: Arial, sans-serif; font-size:14px; }
+    button { padding:8px 12px; background:#b9fa3c; border:none; cursor:pointer; border-radius:4px; }
+    .post { background:#1C2436; padding:10px; margin:10px 0; border-radius:6px; }
+    img { max-width:100px; display:block; margin-top:5px; border-radius:4px; }
+    .btn-group { display:flex; gap:8px; margin-top:8px; }
+
+.btn-group {
+  display:flex;
+  gap:8px;
+  width:100%;
+}
+
+.btn-group button {
+  flex:1;
+}
+
+.post {
+  background:#1C2436;
+  padding:15px;
+  margin:15px 0;
+border-left: 4px solid #b9fa3c;
+  border-radius:8px;
+}
+
+.post-top {
+  display:flex;
+  gap:15px;
+}
+
+.post-info {
+  flex:1;
+}
+
+.post-meta {
+  margin-top:6px;
+  font-size:13px;
+  color:#aaa;
+}
+
+/* TURN SIDEBAR INTO TOP TABS */
+
+.sidebar{
+  width:100%;
+  height:auto;
+  flex-direction:row;
+  align-items:center;
+  gap:0;
+  padding:0;
+  background:#0b0f1a;
+  display:flex;
+}
+
+/* Hide logo + collapse button */
+.sidebar-top{
+  display:none;
+}
+
+/* Buttons become tabs */
+.sidebar button{
+  flex:1;
+  justify-content:center;
+  border-radius:0;
+  padding:14px 8px;
+  border-bottom:3px solid transparent;
+}
+
+/* Active tab underline */
+.sidebar button.active{
+  background:none;
+  color:#b9fa3c;
+  border-bottom:3px solid #b9fa3c;
+}
+
+/* Hover */
+.sidebar button:hover{
+  background:#1C2436;
+}
+
+/* Remove collapse behavior */
+.sidebar.collapsed{
+  width:100%;
+}
+
+.sidebar.collapsed .text{
+  display:inline;
+}
+
+/* Make Page Editor full width */
+
+#panel-pages .CodeMirror {
+  width:100% !important;
+  height:700px;
+}
+
+#panel-pages textarea {
+  width:100%;
+}
+
+  </style>
+</head>
+  <body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar" id="sidebar">
+  <div id="dash-switch">
+  <select onchange="switchDash(this.value)">
+    <option value="">Switch Dashboard</option>
+    <option value="cms">📰 CMS Dashboard</option>
+    <option value="stream">📺 Streaming Dashboard</option>
+  </select>
+</div>
+
+<style>
+#dash-switch{
+  position:fixed;
+  top:10px;
+  right:10px;
+  z-index:99999;
+}
+#dash-switch select{
+  padding:6px;
+  border-radius:6px;
+  font-weight:bold;
+}
+</style>
+
+<script>
+function switchDash(v){
+  if(v==="cms")
+    location.href="https://scores.totalsportslive.co.zw/admin.html";
+
+  if(v==="stream")
+    location.href="https://appp.totalsportslive.co.zw/";
+}
+</script>
+  
+
+  <div class="sidebar-top">
+    <h2 class="logo">Admin</h2>
+
+    <button class="collapse-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+
+  <button onclick="showPanel('posts')" class="active">
+    <span class="icon">📝</span>
+    <span class="text">Posts</span>
+  </button>
+
+  <button onclick="showPanel('pages')">
+    <span class="icon">📄</span>
+    <span class="text">Page Editor</span>
+  </button>
+
+  <button onclick="showPanel('analytics')">
+    <span class="icon">📊</span>
+    <span class="text">Site Analytics</span>
+  </button>
+
+  <button onclick="showPanel('media')">
+    <span class="icon">🖼</span>
+    <span class="text">Media Library</span>
+  </button>
+
+  <button onclick="showPanel('trash')">
+    <span class="icon">🗑</span>
+    <span class="text">Trash</span>
+  </button>
+
+</div>
+    </div>
+<hr>
+  <div id="panel-analytics" class="panel">
+<h2>Site Analytics</h2>
+
+<select id="rangeSelect" onchange="loadAnalytics()">
+  <option value="today">Today</option>
+  <option value="3d">Past 3 Days</option>
+  <option value="7d">Past 7 Days</option>
+  <option value="14d">Past 2 Weeks</option>
+  <option value="1m">Past 1 Month</option>
+  <option value="3m">Past 3 Months</option>
+  <option value="6m">Past 6 Months</option>
+  <option value="12m">Past 12 Months</option>
+  <option value="all" selected>All Time</option>
+</select>
+
+<h3 id="totalViews">Total Views: 0</h3>
+
+<div id="pageViews"></div>
+    </div>
+
+  <div id="panel-posts" class="panel">
+<h2>Search Fixtures</h2>
+
+<input id="searchBox" placeholder="Search team or fixture (example: Liverpool)">
+<button onclick="searchFixtures()">Search</button>
+
+<div id="searchResults"></div>
+
+<hr>
+<h2>Create / Edit Post</h2>
+
+<form id="postForm" enctype="multipart/form-data">
+  <input type="text" name="title" placeholder="Post Title" required>
+  <input type="text" name="author" placeholder="Author Name" required>
+  <select name="category" required>
+    <option value="Match Preview">Match Preview</option>
+    <option value="Transfer News">Transfer News</option>
+    <option value="Breaking">Breaking</option>
+    <option value="Football">Football</option>
+    <option value="Trending">Trending</option>
+    <option value="Premier League">Premier League</option>
+  </select>
+<div class="btn-group">
+  <button type="button" onclick="document.execCommand('bold')">Bold</button>
+  <button type="button" onclick="document.execCommand('italic')">Italic</button>
+  <button type="button" onclick="document.execCommand('insertUnorderedList')">• List</button>
+  <button type="button" onclick="document.execCommand('createLink')">Link</button>
+</div>
+<textarea name="content" id="htmlEditor" placeholder="Post Content (HTML allowed)" required></textarea>
+
+<div id="composeEditor"
+     contenteditable="true"
+     style="display:none;
+            background:#fff;
+            color:#000;
+            padding:10px;
+            min-height:600px;
+            border-radius:4px;">
+</div>
+
+<div class="btn-group">
+  <button type="button" onclick="switchMode()">Switch HTML / Compose</button>
+</div>
+<input type="text" name="tags" placeholder="tags (comma separated)">
+<select name="status">
+  <option value="published">Published</option>
+  <option value="draft">Draft</option>
+</select>
+
+<label>Schedule publish time</label>
+<input type="datetime-local" name="publishAt">
+
+  <input type="file" name="image">
+  <input type="text" name="slug" placeholder="URL Slug (example: Liverpool-sunderland)" required>
+  <button type="submit">Publish</button>
+</form>
+
+<h2>Existing Posts</h2>
+<div id="posts"></div>
+    </div>
+<hr>
+  <div id="panel-pages" class="panel">
+<h2>Page Editor</h2>
+
+<select id="fileSelect"></select>
+<button onclick="loadFile()">Load</button>
+
+
+<div style="display:flex;gap:10px;margin-bottom:10px;">
+  <button onclick="toggleEditorTheme()">Toggle Dark</button>
+  <button onclick="formatCode()">Auto Format</button>
+  <button onclick="searchCode()">Search</button>
+</div>
+
+
+  <textarea id="fileEditor"></textarea>
+  
+</div>
+<iframe id="livePreview"
+
+    style="flex:1;border:1px  solid #444;border-radius:6px; height: 500px;width: 100%;"></iframe>
+<br>
+  <button onclick="saveFile()">Save</button>
+
+<hr>
+<h3>Create New Page</h3>
+<input id="newFileName" placeholder="example: test.html">
+<button onclick="createFile()">Create</button>
+    </div>
+  <div id="panel-media" class="panel">
+<h2>Media Library</h2>
+
+<select id="mediaSelect" onchange="showSelectedImage()">
+  <option value="">Select Image</option>
+</select>
+    </div>
+<div id="panel-trash" class="panel">
+<div id="mediaPreview" style="margin-top:15px;"></div>
+<h2>Trash</h2>
+<div id="trash"></div>
+</div>
+  <script>
+function showPanel(name){
+
+  document.querySelectorAll(".panel")
+    .forEach(p => p.style.display = "none");
+
+  document.querySelectorAll(".sidebar button")
+    .forEach(b => b.classList.remove("active"));
+
+  document.getElementById("panel-"+name)
+    .style.display = "block";
+
+  event.target.classList.add("active");
+
+  // remember last tab
+  localStorage.setItem("adminTab", name);
+}
+
+// default
+const last = localStorage.getItem("adminTab") || "posts";
+showPanel(last);
+</script>
+    
+    <script>
+function toggleSidebar(){
+  const sb = document.getElementById("sidebar");
+  sb.classList.toggle("collapsed");
+
+  // remember state
+  localStorage.setItem(
+    "sidebarCollapsed",
+    sb.classList.contains("collapsed")
+  );
+}
+
+// restore state
+if(localStorage.getItem("sidebarCollapsed")==="true"){
+  document.getElementById("sidebar")
+    .classList.add("collapsed");
+}
+</script>
+ 
+<script>
+let editor;
+let darkTheme = true;
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+  editor = CodeMirror.fromTextArea(
+    document.getElementById("fileEditor"),
+    {
+      mode:"htmlmixed",
+      lineNumbers:true,
+      theme:"material-darker",
+      lineWrapping:true
+    }
+  );
+
+  editor.on("change", updatePreview);
+});
+
+function toggleEditorTheme(){
+  darkTheme = !darkTheme;
+  editor.setOption("theme", darkTheme ? "material-darker" : "default");
+}
+
+function formatCode(){
+  const formatted = html_beautify(editor.getValue(),{
+    indent_size:2
+  });
+  editor.setValue(formatted);
+}
+
+function searchCode(){
+  editor.execCommand("find");
+}
+
+let previewReady = false;
+
+function updatePreview() {
+  const iframe = document.getElementById("livePreview");
+  const code = editor.getValue();
+
+  if (!previewReady) {
+    iframe.srcdoc = code;
+    previewReady = true;
+    return;
+  }
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+  // Update full document without recreating iframe
+  doc.open();
+  doc.write(code);
+  doc.close();
+}
+
+</script>
+<script>
+async function loadMedia(){
+  const res = await fetch("/api/media");
+  const files = await res.json();
+
+  const select = document.getElementById("mediaSelect");
+  select.innerHTML = `<option value="">Select Image</option>`;
+
+  files.forEach(f=>{
+    select.innerHTML += `<option value="${f}">${f}</option>`;
+  });
+}
+
+function showSelectedImage(){
+  const file = document.getElementById("mediaSelect").value;
+  const preview = document.getElementById("mediaPreview");
+
+  if(!file){
+    preview.innerHTML = "";
+    return;
+  }
+
+  preview.innerHTML = `
+    <img src="/uploads/${file}" width="200" style="border-radius:8px;"><br><br>
+    <button onclick="navigator.clipboard.writeText('/uploads/${file}')">
+      Copy URL
+    </button>
+    <button onclick="deleteMedia('${file}')">
+      Delete
+    </button>
+  `;
+}
+
+async function deleteMedia(file){
+  if(!confirm("Delete image?")) return;
+  await fetch("/api/media/"+file,{method:"DELETE"});
+  loadMedia();
+  document.getElementById("mediaPreview").innerHTML="";
+}
+
+loadMedia();
+
+async function loadFileList(){
+  const res = await fetch("/api/files");
+  const files = await res.json();
+
+  const select = document.getElementById("fileSelect");
+  select.innerHTML = "";
+
+  files.forEach(f=>{
+    select.innerHTML += `<option value="${f}">${f}</option>`;
+  });
+}
+
+async function loadFile(){
+  const name = document.getElementById("fileSelect").value;
+  const res = await fetch("/api/files/"+name);
+  const data = await res.json();
+editor.setValue(data.content);
+}
+
+async function saveFile(){
+  const name = document.getElementById("fileSelect").value;
+const content = editor.getValue();
+
+  await fetch("/api/files/"+name,{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({content})
+  });
+
+  alert("Saved!");
+}
+
+async function createFile(){
+  const name = document.getElementById("newFileName").value;
+
+  await fetch("/api/files",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ name })
+  });
+
+  alert("Created!");
+  loadFileList();
+}
+
+loadFileList();
+async function loadAnalytics(){
+  const range = document.getElementById("rangeSelect").value;
+  const res = await fetch("/api/analytics/range?range="+range);
+  const data = await res.json();
+
+  document.getElementById("totalViews").textContent =
+    "Total Views: " + data.totalViews;
+
+  const box = document.getElementById("pageViews");
+  box.innerHTML = "";
+
+  data.pages.forEach(([url,count])=>{
+    box.innerHTML += `
+      <div style="padding:6px;border-bottom:1px solid #333">
+        ${url} — <b>${count}</b>
+      </div>
+    `;
+  });
+}
+
+loadAnalytics();
+</script>
+
+<script>
+let composeMode=false;
+
+function switchMode(){
+  const htmlBox=document.getElementById("htmlEditor");
+  const composeBox=document.getElementById("composeEditor");
+
+  if(!composeMode){
+    composeBox.innerHTML=htmlBox.value;
+    htmlBox.style.display="none";
+    composeBox.style.display="block";
+  }else{
+    htmlBox.value=composeBox.innerHTML;
+    htmlBox.style.display="block";
+    composeBox.style.display="none";
+  }
+
+  composeMode=!composeMode;
+}
+
+async function loadPosts() {
+
+  const res = await fetch('/api/admin/posts');
+  const posts = await res.json();
+
+  const container = document.getElementById('posts');
+  const trashContainer = document.getElementById('trash');
+
+  container.innerHTML = "";
+  trashContainer.innerHTML = "";
+
+  for (const p of posts) {
+
+    // -------------------------
+    // TRASH POSTS
+    // -------------------------
+    if (p.deleted) {
+      trashContainer.innerHTML += `
+        <div class="post">
+          <h4>${p.title}</h4>
+
+          <div class="btne-group">
+            <button onclick="restorePost('${p.id}')">Restore</button>
+            <button onclick="permanentDelete('${p.id}')">Delete Permanently</button>
+          </div>
+        </div>
+      `;
+      continue;
+    }
+
+    // -------------------------
+    // FETCH COMMENT COUNT
+    // -------------------------
+    let commentsCount = 0;
+    try {
+      const cRes = await fetch('/api/comments/' + p.slug);
+      const comments = await cRes.json();
+      commentsCount = comments.length;
+    } catch (e) {}
+
+    // -------------------------
+    // NORMAL POSTS
+    // -------------------------
+    container.innerHTML += `
+      <div class="post">
+
+        <div class="post-top">
+
+          <img src="${p.image || 'https://via.placeholder.com/80'}"
+               style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+
+          <div class="post-info">
+
+            <h3 style="margin:0;">${p.title}</h3>
+
+            <div style="margin-top:4px;">
+              <span style="
+                background:${p.status === "published" ? "#22c55e" : "#f59e0b"};
+                padding:3px 8px;
+                border-radius:4px;
+                font-size:12px;
+                color:#000;
+                font-weight:bold;
+              ">
+                ${p.status.toUpperCase()}
+              </span>
+            </div>
+
+            <div class="post-meta">
+              👁 ${p.views || 0} views • 💬 ${commentsCount} comments
+            </div>
+
+            <small style="color:#aaa;">${p.category}</small>
+
+          </div>
+        </div>
+
+        <div class="btn-group">
+<button onclick="copyPostUrl('${p.slug}')">Copy URL</button>
+          <button onclick="editPost('${p.id}')">Edit</button>
+          <button onclick="deletePost('${p.id}')">Delete</button>
+          <button onclick="toggleStatus('${p.id}')">
+            ${p.status === "published" ? "Unpublish" : "Publish"}
+          </button>
+        </div>
+
+      </div>
+    `;
+  }
+}
+
+
+let deleteTargetId = null;
+
+function deletePost(id){
+  deleteTargetId = id;
+  document.getElementById("deleteModal").style.display = "flex";
+}
+
+function closeDeleteModal(){
+  deleteTargetId = null;
+  document.getElementById("deleteModal").style.display = "none";
+}
+
+async function confirmDelete(){
+  if(!deleteTargetId) return;
+
+  await fetch('/api/posts/' + deleteTargetId, {
+    method:'DELETE'
+  });
+
+  closeDeleteModal();
+  loadPosts();
+}
+async function editPost(id) {
+  const res = await fetch('/api/posts/' + id);
+  const post = await res.json();
+
+  const form = document.getElementById('postForm');
+
+  form.querySelector('[name="title"]').value = post.title;
+  form.querySelector('[name="author"]').value = post.author;
+  form.querySelector('[name="category"]').value = post.category;
+  form.querySelector('[name="content"]').value = post.content;
+  form.querySelector('[name="slug"]').value = post.slug;
+  form.querySelector('[name="tags"]').value = post.tags || '';
+
+if(post.image){
+    let preview = document.getElementById("edit-preview");
+    if(preview) preview.remove();   // prevent duplicates
+
+    const img = document.createElement("img");
+    img.id = "edit-preview";
+    img.src = post.image.startsWith("/") ? post.image : "/" + post.image;
+    img.style.width = "120px";
+    img.style.marginTop = "10px";
+    img.style.borderRadius = "6px";
+    form.appendChild(img);
+  }
+
+  form.dataset.editId = id;
+  form.querySelector('button[type="submit"]').textContent = "Update Post";
+}
+document.getElementById('postForm').addEventListener('submit', async e => {
+  e.preventDefault();
+if (composeMode) {
+  document.getElementById("htmlEditor").value =
+    document.getElementById("composeEditor").innerHTML;
+}
+
+const formData = new FormData(e.target);
+  const editId = e.target.dataset.editId;
+
+  let res;
+  if (editId) {
+    // Update post
+    res = await fetch('/api/posts/' + editId, { method: 'PUT', body: formData });
+  } else {
+    // Create new post
+    res = await fetch('/api/posts', { method: 'POST', body: formData });
+  }
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error || "Failed to save post");
+    return;
+  }
+
+const postUrl = "/post/" + data.slug;
+
+alert(editId ? 
+  "Post updated successfully!" : 
+  "Post published successfully!"
+);
+
+const copyBtn = document.createElement("button");
+copyBtn.textContent = "Copy Post URL";
+copyBtn.style.marginTop = "10px";
+copyBtn.onclick = () => {
+  navigator.clipboard.writeText(postUrl);
+  alert("Copied: " + postUrl);
+};
+
+e.target.appendChild(copyBtn);
+
+if(editId){
+  // stay in edit mode
+  e.target.dataset.editId = editId;
+  e.target.querySelector('button[type="submit"]').textContent = "Update Post";
+}else{
+  // new post
+  e.target.reset();
+  e.target.dataset.editId = "";
+  e.target.querySelector('button[type="submit"]').textContent = "Publish";
+}
+
+loadPosts();
+});
+
+async function searchFixtures() {
+  const q = document.getElementById("searchBox").value.trim();
+  if (!q) return;
+
+  try {
+
+    // 1️⃣ Fetch RAW HTML post
+const postRes = await fetch(`/api/generate-post?q=${encodeURIComponent(q)}`);
+const rawHtml = await postRes.text();
+
+const imageUrl = `/api/fixture-image?team=${encodeURIComponent(q)}`;
+    fillEditor(rawHtml, imageUrl);
+
+  } catch (err) {
+    console.error(err);
+    alert("Post generator failed. You can continue manually.");
+  }
+}
+
+function fillEditor(rawHtml, imageUrl) {
+
+  const form = document.getElementById("postForm");
+
+  // Try to extract title from first <b>Team Vs Team</b>
+  const titleMatch = rawHtml.match(/<b>(.*?)<\/b>/i);
+  const title = titleMatch ? titleMatch[1] : "Match Preview";
+
+  form.querySelector('[name="title"]').value = title;
+  form.querySelector('[name="slug"]').value =
+    title.toLowerCase().replace(/\s+/g,'-');
+
+  // Put FULL html directly (since API already builds it)
+  const htmlBox = document.getElementById("htmlEditor");
+  htmlBox.value = rawHtml;
+
+  if (composeMode) {
+    document.getElementById("composeEditor").innerHTML = rawHtml;
+  }
+
+  // Auto attach image
+fetch(imageUrl)
+  .then(r=>{
+    if(!r.ok) throw new Error("Image fetch failed");
+    return r.blob();
+  })
+    .then(blob => {
+      const file = new File([blob], "fixture.png", { type: blob.type });
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      form.querySelector('[name="image"]').files = dt.files;
+    })
+    .catch(() => console.log("Image auto attach failed"));
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function toggleStatus(id){
+  await fetch('/api/posts/'+id,{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ toggle:true })
+  });
+  loadPosts();
+}
+async function restorePost(id){
+  await fetch('/api/posts/'+id,{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ restore:true })
+  });
+
+  loadPosts();
+}
+
+async function permanentDelete(id){
+
+  const ok = confirm("Permanently delete this post?");
+
+  if(!ok) return;
+
+  await fetch('/api/posts/'+id,{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ permanent:true })
+  });
+
+  loadPosts();
+}
+
+loadPosts();
+</script>
+<script>
+function copyPostUrl(slug){
+  const url="https://scores.totalsportslive.co.zw/post/"+slug;
+  navigator.clipboard.writeText(url);
+  alert("Copied: "+url);
+}
+</script>
+<!-- DELETE CONFIRM MODAL -->
+<div id="deleteModal" style="
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.7);
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+">
+  <div style="
+    background:#1C2436;
+    padding:25px;
+    border-radius:10px;
+    width:320px;
+    text-align:center;
+  ">
+    <h3 style="margin-bottom:15px;">Delete Post?</h3>
+    <p style="font-size:14px;color:#aaa;">
+      This post will be moved to Trash.
+    </p>
+
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button onclick="closeDeleteModal()" style="flex:1;background:#444;">
+        Cancel
+      </button>
+      <button onclick="confirmDelete()" style="flex:1;background:#dc2626;color:white;">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+   <!-- end sidebar -->
+
+<!-- MAIN CONTENT -->
+
+<div class="main" id="mainContent">
+   <!-- end main -->
+
+</div> <!-- end layout -->
+
+</body>
+</html>

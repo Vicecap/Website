@@ -1,0 +1,200 @@
+.my-post-style * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.my-post-style {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    color: #1e293b;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.my-post-style .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.my-post-style .card {
+    background: white;
+    border-radius: 0px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.my-post-style .card-header {
+    padding: 20px 24px;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.my-post-style .card-content { padding: 24px; }
+
+.my-post-style .form-header { background: linear-gradient(135deg, #374151 0%, #1f2937 100%); }
+.my-post-style .h2h-header { background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%); }
+.my-post-style .stats-header { background: linear-gradient(135deg, #166534 0%, #15803d 100%); }
+.my-post-style .venue-header { background: linear-gradient(135deg, #7c2d12 0%, #92400e 100%); }
+
+.my-post-style .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 32px;
+}
+
+.my-post-style .team-section { display: flex; flex-direction: column; }
+.my-post-style .team-info { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.my-post-style .team-logo { width: 48px; height: 48px; border-radius: 50%; }
+.my-post-style .team-name { font-size: 15px; font-weight: 700; }
+
+.my-post-style .form-badges { display: flex; gap: 8px; margin-top: 8px; }
+
+.my-post-style .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.my-post-style .badge-win { background: #dcfce7; color: #166534; }
+.my-post-style .badge-loss { background: #fee2e2; color: #dc2626; }
+.my-post-style .badge-draw { background: #fef3c7; color: #d97706; }
+
+.my-post-style .match-list { display: flex; flex-direction: column; gap: 12px; }
+.my-post-style .match-item {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.my-post-style .match-item:hover { background: #f1f5f9; }
+
+.my-post-style .match-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    gap: 16px;
+}
+
+.my-post-style .opponent-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+.my-post-style .opponent-logo { width: 32px; height: 32px; }
+.my-post-style .match-result { text-align: right; }
+.my-post-style .score { font-weight: 700; font-size: 16px; }
+.my-post-style .match-date { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+.my-post-style .h2h-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.my-post-style .h2h-stat {
+    background: #1e40af;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+.my-post-style .h2h-stat:nth-child(2) { background: #6b7280; }
+.my-post-style .h2h-stat:nth-child(3) { background: #144992; }
+.my-post-style .h2h-number { font-size: 24px; font-weight: 700; }
+.my-post-style .h2h-label { font-size: 14px; opacity: 0.9; }
+
+.my-post-style .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.my-post-style .stat-item {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.my-post-style .stat-label { font-weight: 500; color: #374151; }
+.my-post-style .stat-value { font-weight: 700; font-size: 14px; }
+
+.my-post-style .venue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.my-post-style .venue-item {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.my-post-style .venue-icon { width: 20px; height: 20px; color: #7c2d12; }
+
+.my-post-style .loading { text-align: center; padding: 40px; color: #64748b; }
+.my-post-style .error {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+.my-post-style .no-data { text-align: center; padding: 32px; color: #64748b; font-size: 14px; }
+
+@media (max-width: 768px) {
+    .my-post-style .team-grid { grid-template-columns: 1fr; gap: 24px; }
+    .my-post-style .h2h-summary { grid-template-columns: 1fr; gap: 12px; }
+    .my-post-style .stats-grid { grid-template-columns: 1fr; gap: 24px; }
+    .my-post-style .venue-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+/* -------------------- Widget Image Styles -------------------- */
+
+/* Team logos (recent form, team statistics) */
+.my-post-style .team-logo,
+.my-post-style .opponent-logo {
+    width: 48px;           /* fixed size for logos */
+    height: 48px;
+    border-radius: 50%;    /* circular logos */
+    object-fit: cover;     /* maintain aspect ratio */
+    display: inline-block;
+}
+
+/* Match opponent images inside match-list */
+.my-post-style .match-item img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* General card images (venue, team stats images, ads) */
+.my-post-style .card img,
+.my-post-style .fw-venue-info img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;    /* slightly rounded */
+    display: block;
+}
+
+/* Venue icons or small images */
+.my-post-style .venue-item img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
+
+/* Fallback for any other images inside the widget */
+.my-post-style img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+}

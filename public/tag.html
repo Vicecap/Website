@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title id="tagTitle">Tag</title>
+<meta name="description" id="tagDesc">
+
+<link rel="canonical" id="tagCanon">
+
+<script type="application/ld+json" id="tagSchema"></script>
+
+</head>
+<body>
+
+<h1 id="tagHeading"></h1>
+<div id="tagPosts"></div>
+
+<script>
+const tag = decodeURIComponent(location.pathname.split("/").pop());
+
+document.getElementById("tagHeading").textContent =
+  "#" + tag + " News";
+
+document.title = tag + " News | TotalSportsLive";
+
+document.getElementById("tagDesc").content =
+  `Latest ${tag} news, updates, transfers and analysis.`;
+
+document.getElementById("tagCanon").href =
+  "https://scores.totalsportslive.co.zw/tag/" + tag;
+
+// LOAD POSTS
+fetch("/api/posts")
+.then(r=>r.json())
+.then(posts=>{
+
+  const filtered = posts.filter(p =>
+    p.tags && p.tags.includes(tag)
+  );
+
+  document.getElementById("tagPosts").innerHTML =
+    filtered.map(p=>`
+      <a href="/post/${p.slug}">
+        <h3>${p.title}</h3>
+      </a>
+    `).join("");
+
+  // Schema
+  document.getElementById("tagSchema").textContent =
+    JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"CollectionPage",
+      "name": tag+" News",
+      "hasPart": filtered.map(p=>({
+        "@type":"NewsArticle",
+        "headline":p.title,
+        "url":"https://scores.totalsportslive.co.zw/post/"+p.slug
+      }))
+    });
+
+});
+</script>
+
+</body>
+</html>

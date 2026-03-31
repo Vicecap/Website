@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Admin Login</title>
+
+<style>
+
+body{
+
+  background:#12121D;
+
+  color:white;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  height:100vh;
+
+  font-family:Arial;
+
+}
+
+.box{
+
+  background:#1C2436;
+
+  padding:30px;
+
+  border-radius:8px;
+
+  width:300px;
+
+}
+
+input{
+
+  width:100%;
+
+  padding:8px;
+
+  margin-bottom:10px;
+
+}
+
+button{
+
+  width:100%;
+
+  padding:8px;
+
+  background:#b9fa3c;
+
+  border:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>Admin Login</h2>
+
+  <input id="username" placeholder="Username">
+
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+async function login(){
+
+  const username=document.getElementById("username").value;
+
+  const password=document.getElementById("password").value;
+
+  const res=await fetch("/api/login",{
+
+    method:"POST",
+
+    headers:{ "Content-Type":"application/json" },
+
+    body:JSON.stringify({username,password})
+
+  });
+
+  if(res.ok){
+
+    window.location="/admin.html";
+
+  }else{
+
+    alert("Invalid login");
+
+  }
+
+}
+
+</script>
+
+</body>
+
+</html>

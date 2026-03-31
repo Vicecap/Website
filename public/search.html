@@ -1,0 +1,25 @@
+<h2>Search Results</h2>
+<div id="results"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const query = params.get("q");
+
+fetch(`/api/search?q=${query}`)
+  .then(res=>res.json())
+  .then(posts=>{
+    const box = document.getElementById("results");
+
+    if(!posts.length){
+      box.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+
+    posts.forEach(post=>{
+      const a = document.createElement("a");
+      a.href = "/post/" + post.slug;
+      a.innerHTML = `<h3>${post.title}</h3>`;
+      box.appendChild(a);
+    });
+  });
+</script>

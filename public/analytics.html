@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TotalSportsLive Analytics</title>
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  background:#0f1220;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.card{
+  background:#181c33;
+  border:none;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:18px;
+}
+
+h2{
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+#stream{
+  max-height:280px;
+  overflow-y:auto;
+  font-size:13px;
+}
+
+#stream li{
+  border-bottom:1px solid rgba(255,255,255,.1);
+  padding:6px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+<h1 class="mb-4">📊 TotalSportsLive Analytics</h1>
+
+<!-- ROW 1 -->
+<div class="row">
+
+
+
+<div class="col-md-6">
+  <div class="card">
+    <h2>🔥 Live Page View Stream</h2>
+    <ul id="stream"></ul>
+  </div>
+</div>
+
+<div class="col-md-6">
+  <div class="card">
+    <h2>📈 Daily Page Views</h2>
+    <canvas id="dailyChart"></canvas>
+  </div>
+</div>
+
+</div>
+
+<!-- ROW 2 -->
+<div class="row">
+
+<div class="col-md-4">
+  <div class="card">
+    <h2>💻 Devices</h2>
+    <canvas id="deviceChart"></canvas>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card">
+    <h2>🌐 Browsers</h2>
+    <canvas id="browserChart"></canvas>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card">
+    <h2>🌍 Countries</h2>
+    <canvas id="countryChart"></canvas>
+  </div>
+</div>
+
+</div>
+
+<!-- ROW 3 -->
+<div class="row">
+
+<div class="col-md-12">
+  <div class="card text-center">
+    <h2>🎯 Bounce Rate</h2>
+    <h1 id="bounceRate">0%</h1>
+  </div>
+</div>
+
+</div>
+
+</div>
+<div class="card text-center">
+<h2>👥 Live Visitors</h2>
+<h1 id="liveVisitors">0</h1>
+</div>
+
+<script>
+async function liveCount(){
+  const res = await fetch("/api/live-visitors");
+  const data = await res.json();
+  document.getElementById("liveVisitors").innerText=data.count;
+}
+setInterval(liveCount,2000);
+liveCount();
+</script>
+<div class="card">
+<h2>📰 Post Analytics</h2>
+<table class="table table-dark table-sm">
+<thead>
+<tr><th>Post</th><th>Views</th></tr>
+</thead>
+<tbody id="postStats"></tbody>
+</table>
+</div>
+
+<script>
+async function loadPostStats(){
+  const res = await fetch("/api/post-analytics");
+  const data = await res.json();
+
+  document.getElementById("postStats").innerHTML =
+    Object.entries(data)
+      .sort((a,b)=>b[1]-a[1])
+      .map(p=>`<tr><td>${p[0]}</td><td>${p[1]}</td></tr>`)
+      .join("");
+}
+loadPostStats();
+</script>
+
+<script>
+
+// -------------------
+// REALTIME STREAM
+// -------------------
+async function loadStream(){
+  const res = await fetch("/api/realtime-stream");
+  const data = await res.json();
+
+  document.getElementById("stream").innerHTML =
+    data.reverse().map(v =>
+      `<li>${v.device} • ${v.browser} • ${v.country} • ${v.url}</li>`
+    ).join("");
+}
+
+setInterval(loadStream,2000);
+loadStream();
+
+// -------------------
+// GENERIC PIE LOADER
+// -------------------
+async function loadPie(endpoint, canvasId){
+  const res = await fetch(endpoint);
+  const data = await res.json();
+
+  new Chart(document.getElementById(canvasId),{
+    type:"pie",
+    data:{
+      labels:Object.keys(data),
+      datasets:[{
+        data:Object.values(data)
+      }]
+    }
+  });
+}
+
+loadPie("/api/devices","deviceChart");
+loadPie("/api/browsers","browserChart");
+loadPie("/api/countries","countryChart");
+
+// -------------------
+// DAILY CHART
+// -------------------
+async function loadDaily(){
+  const res = await fetch("/api/daily");
+  const data = await res.json();
+
+  new Chart(document.getElementById("dailyChart"),{
+    type:"line",
+    data:{
+      labels:Object.keys(data),
+      datasets:[{
+        label:"Page Views",
+        data:Object.values(data),
+        tension:.3,
+        fill:true
+      }]
+    }
+  });
+}
+loadDaily();
+
+// -------------------
+// BOUNCE RATE
+// -------------------
+async function loadBounce(){
+  const res = await fetch("/api/bounce-rate");
+  const data = await res.json();
+  document.getElementById("bounceRate").innerText =
+    data.rate + "%";
+}
+loadBounce();
+
+</script>
+
+</body>
+</html>

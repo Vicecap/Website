@@ -1,0 +1,63 @@
+/* Post & News Cards */
+.blogpost, #box-posts, #post, #news-feed {
+  box-shadow: 0 0 4px rgba(0,0,0,.3);
+  background: #fff;
+  border-radius: 8px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+/* Post Image */
+.post-image-wrap img, #box-posts ul li .rnav-img img, #news-feed img, #post img {
+  width: 90%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+
+/* Post Info & Title */
+.post-info, #post p, #news-feed h3 {
+  padding: 10px 12px;
+}
+.post-info h3, #box-posts ul li h3, #news-feed h3 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 5px 0;
+  overflow: hidden;
+}
+
+/* Meta & Share Buttons */
+.main-post-meta, .post-share, .post-tags, #post small {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}
+.post-share, .share-links li a {
+  background: #931800;
+  color: #fff;
+  border-radius: 8px;
+  padding: 5px 10px;
+  text-align: center;
+  display: inline-block;
+  margin: 5px 5px 0 0;
+}
+
+/* Post Tags */
+.post-tags, .post-tags li {
+  background: #eceef2;
+  margin-top: 15px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  float: right;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .post-image-wrap img, #post img, #news-feed img {
+    height: auto;
+    width: 100%;
+  }
+}
